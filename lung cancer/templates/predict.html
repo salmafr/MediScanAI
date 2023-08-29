@@ -1,0 +1,213 @@
+
+{% block content%}
+    <h1 align="center">Veuillez remplir les cases suivantes</h1>
+
+   
+<head>
+  <meta charset="UTF-8">
+  
+  <!-- Make it compatible to mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lung cancer prediction</title>
+  
+</head>
+
+<body style="background: #ffffff;">
+ <div class="login">
+	<h1 style="color:Violet;">Lung cancer prediction</h1>
+
+     <!-- Action is where the data is sent. In our case, predict page.
+     If action is omitted, it assumed to be the current page -->
+    <form action="{{ url_for('predict')}}"method="post">
+        <div>
+        <select name="Age" required="required">
+            <option value="" disabled selected>Select an Age</option>
+            {% for age in range(14, 74) %}
+                <option value="{{ age }}">{{ age }}</option>
+            {% endfor %}
+        </select>
+        </div>
+    	<select name="Age" required="required">
+            <option value="" disabled selected>Select an Age</option>
+            {% for age in range(14, 74) %}
+              <option value="{{ age }}">{{ age }}</option>
+            {% endfor %}
+          </select><br>
+
+        <select name="Gender" required="required" onchange="updateHiddenInput(this.value)">
+            <option value="" disabled selected>Select a Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+          
+          <input type="hidden" name="Gender" id="genderValue" value="">
+          
+          <br>
+
+
+        <select name="Air Pollution" required="required">
+            <option value="" disabled selected>Air Pollution percent</option>
+            {% for AP in range(0, 9) %}
+              <option value="{{ AP }}">{{ AP }}</option>
+            {% endfor %}
+          </select><br>
+
+        <select name="Alcohol use" required="required">
+            <option value="" disabled selected>Alcohol use percent</option>
+            {% for AU in range(0, 9) %}
+              <option value="{{ AU }}">{{ AU }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select name="Dust Allergy" required="required">
+            <option value="" disabled selected>Dust Allergy percent</option>
+            {% for DA in range(0, 9) %}
+              <option value="{{ DA }}">{{ DA }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select name="OccuPational Hazards" required="required">
+            <option value="" disabled selected>OccuPational Hazards percent</option>
+            {% for OH in range(0, 9) %}
+              <option value="{{ OH }}">{{ OH }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select name="Genetic Risk" required="required">
+            <option value="" disabled selected>Genetic Risk percent</option>
+            {% for GR in range(0, 9) %}
+              <option value="{{ GR }}">{{ GR }}</option>
+            {% endfor %}
+          </select><br>
+
+        <select name="chronic Lung Disease" required="required">
+            <option value="" disabled selected>chronic Lung Disease percent</option>
+            {% for LD in range(0, 9) %}
+              <option value="{{ LD }}">{{ LD }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select name="Balanced Diet" required="required">
+            <option value="" disabled selected>Balanced Diet percent</option>
+            {% for BD in range(0, 9) %}
+              <option value="{{ BD }}">{{ BD }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select name="Obesity" required="required">
+            <option value="" disabled selected>Obesity percent</option>
+            {% for O in range(0, 9) %}
+              <option value="{{ O }}">{{ O }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select name="Smoking" required="required">
+            <option value="" disabled selected>Smoking percent</option>
+            {% for S in range(0, 9) %}
+              <option value="{{ S }}">{{ S }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select name="Passive smoker" required="required">
+            <option value="" disabled selected>Passive smoker percent</option>
+            {% for PS in range(0, 9) %}
+              <option value="{{ PS }}">{{ PS }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select name="Chest Pain" required="required">
+            <option value="" disabled selected>Chest Pain percent</option>
+            {% for CP in range(0, 9) %}
+              <option value="{{ CP }}">{{ CP }}</option>
+            {% endfor %}
+          </select><br> 
+
+          <select name="Coughing of Blood" required="required">
+            <option value="" disabled selected>Coughing of Blood percent</option>
+            {% for CoB in range(0, 9) %}
+              <option value="{{ CoB }}">{{ CoB }}</option>
+            {% endfor %}
+          </select><br> 
+
+          <select name="Fatigue" required="required">
+            <option value="" disabled selected>Fatigue percent</option>
+            {% for F in range(0, 9) %}
+              <option value="{{ F }}">{{ F }}</option>
+            {% endfor %}
+          </select><br> 
+        
+          <select name="Weight Loss" required="required">
+            <option value="" disabled selected>Weight Loss percent</option>
+            {% for WL in range(0, 9) %}
+              <option value="{{ WL }}">{{ WL }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="Shortness of Breath" required="required">
+            <option value="" disabled selected>Shortness of Breath percent</option>
+            {% for SoB in range(0, 9) %}
+              <option value="{{ SoB }}">{{ SoB }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="wheezing" required="required">
+            <option value="" disabled selected>wheezing percent</option>
+            {% for W in range(0, 9) %}
+              <option value="{{ W }}">{{ W }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="swallowing difficulty" required="required">
+            <option value="" disabled selected>swallowing difficulty percent</option>
+            {% for SD in range(0, 9) %}
+              <option value="{{ SD }}">{{ SD }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="clubbing of finger " required="required">
+            <option value="" disabled selected>clubbing of finger percent</option>
+            {% for CoF in range(0, 9) %}
+              <option value="{{ CoF }}">{{ CoF }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="Frequent Cold" required="required">
+            <option value="" disabled selected>Frequent Cold percent</option>
+            {% for FC in range(0, 10) %}
+              <option value="{{ FC }}">{{ FC }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select name="Dry Cough" required="required">
+            <option value="" disabled selected>Dry Cogh percent</option>
+            {% for DC in range(0, 8) %}
+              <option value="{{ DC }}">{{ DC }}</option>
+            {% endfor %}
+          </select><br> 
+
+        <select name="Snoring" required="required">
+            <option value="" disabled selected>Snoring percent</option>
+            {% for Sn in range(0, 8) %}
+              <option value="{{ Sn }}">{{ Sn }}</option>
+            {% endfor %}
+          </select><br>   
+
+          
+        <p>
+
+       
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict Lung cancer</button></p>
+    </form>
+
+   <br>
+   <br>
+   <h4 style="color:Violet;">
+   {{ prediction_text }} </h4>
+
+ </div>
+
+
+</body>
+{% endblock %}
