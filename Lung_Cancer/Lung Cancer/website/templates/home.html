@@ -1,0 +1,551 @@
+{% extends "base.html" %} {% block title %}LungCancerPred{% endblock %} 
+
+{% block content%}
+    <h1 align="center">Veuillez remplir les cases suivantes</h1>
+
+   
+<head>
+  <meta charset="UTF-8">
+  
+  <!-- Make it compatible to mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lung cancer prediction</title>
+  
+</head>
+
+<body style="background: #ffffff;">
+ <div class="login">
+
+  <form action="{{ url_for('views.predict')}}" method="post">
+    <div class="row justify-content-around justify-content-evenly">
+      <div class="col-6" style="width: 280px;">
+        <div class="card-body">
+          <!-- Age -->
+          <br><label class="form-label" for="typeNumber">Age:</label>
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Age" required="required">
+            <option value="" disabled selected>Select an Age</option>
+            {% for age in range(14, 74) %}
+              <option value="{{ age }}">{{ age }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+  
+      <div class="col-6" style="width: 280px;">
+        <div class="card-body">
+          <!-- Gender -->
+          <br><label class="form-label" for="typeNumber">Gender:</label>
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Gender" required="required" onchange="updateHiddenInput(this.value)">
+            <option value="" disabled selected>Select a Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <input type="hidden" name="Gender" id="genderValue" value="">
+        </div>
+      </div>
+      <div class="row justify-content-around justify-content-evenly">
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- Air Pollution -->
+            <br><label class="form-label" for="typeNumber">Air Pollution:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Air Pollution" required="required">
+              <option value="" disabled selected>Air Pollution percent</option>
+              {% for AP in range(0, 9) %}
+                <option value="{{ AP }}">{{ AP }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+    
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- Alcohol use -->
+            <br><label class="form-label" for="typeNumber">Alcohol use:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Alcohol use" required="required">
+              <option value="" disabled selected>Alcohol use percent</option>
+              {% for AU in range(0, 9) %}
+                <option value="{{ AU }}">{{ AU }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-around justify-content-evenly">
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- Dust Allergy -->
+            <br><label class="form-label" for="typeNumber">Dust Allergy:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Dust Allergy" required="required">
+              <option value="" disabled selected>Dust Allergy percent</option>
+              {% for DA in range(0, 9) %}
+                <option value="{{ DA }}">{{ DA }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- OccuPational Hazards -->
+            <br><label class="form-label" for="typeNumber">OccuPational Hazards:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="OccuPational Hazards" required="required">
+              <option value="" disabled selected>OccuPational Hazards percent</option>
+              {% for OH in range(0, 9) %}
+                <option value="{{ OH }}">{{ OH }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="row justify-content-around justify-content-evenly">
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- Genetic Risk -->
+            <br><label class="form-label" for="typeNumber">Genetic Risk:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Genetic Risk" required="required">
+              <option value="" disabled selected>Genetic Risk percent</option>
+              {% for GR in range(0, 9) %}
+                <option value="{{ GR }}">{{ GR }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="col-6" style="width: 280px;">
+          <div class="card-body">
+            <!-- chronic Lung Disease -->
+            <br><label class="form-label" for="typeNumber">chronic Lung Disease:</label>
+            <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="chronic Lung Disease" required="required">
+              <option value="" disabled selected>chronic Lung Disease percent</option>
+              {% for LD in range(0, 9) %}
+                <option value="{{ LD }}">{{ LD }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+<!-- Row 5 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Balanced Diet -->
+      <br><label class="form-label" for="typeNumber">Balanced Diet:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Balanced Diet" required="required">
+        <option value="" disabled selected>Balanced Diet percent</option>
+        {% for BD in range(0, 9) %}
+          <option value="{{ BD }}">{{ BD }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Obesity -->
+      <br><label class="form-label" for="typeNumber">Obesity:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Obesity" required="required">
+        <option value="" disabled selected>Obesity percent</option>
+        {% for O in range(0, 9) %}
+          <option value="{{ O }}">{{ O }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Row 6 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Smoking -->
+      <br><label class="form-label" for="typeNumber">Smoking:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Smoking" required="required">
+        <option value="" disabled selected>Smoking percent</option>
+        {% for S in range(0, 9) %}
+          <option value="{{ S }}">{{ S }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Passive smoker -->
+      <br><label class="form-label" for="typeNumber">Passive smoker:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Passive Smoker" required="required">
+        <option value="" disabled selected>Passive smoker percent</option>
+        {% for PS in range(0, 9) %}
+          <option value="{{ PS }}">{{ PS }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Row 7 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Chest Pain -->
+      <br><label class="form-label" for="typeNumber">Chest Pain:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Chest Pain" required="required">
+        <option value="" disabled selected>Chest Pain percent</option>
+        {% for CP in range(0, 9) %}
+          <option value="{{ CP }}">{{ CP }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Coughing of Blood -->
+      <br><label class="form-label" for="typeNumber">Coughing of Blood:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Coughing of Blood" required="required">
+        <option value="Coughing of Blood percent" disabled selected></option>
+        {% for CoB in range(0, 9) %}
+          <option value="{{ CoB }}">{{ CoB }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Row 8 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Fatigue -->
+      <br><label class="form-label" for="typeNumber">Fatigue:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Fatigue" required="required">
+        <option value="" disabled selected>Fatigue percent</option>
+        {% for F in range(0, 9) %}
+          <option value="{{ F }}">{{ F }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Weight Loss -->
+      <br><label class="form-label" for="typeNumber">Weight Loss:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Weight Loss" required="required">
+        <option value="" disabled selected>Weight Loss percent</option>
+        {% for WL in range(0, 9) %}
+          <option value="{{ WL }}">{{ WL }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Row 9 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Shortness of Breath -->
+      <br><label class="form-label" for="typeNumber">Shortness of Breath:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Shortness of Breath" required="required">
+        <option value="" disabled selected>Shortness of Breath percent</option>
+        {% for SoB in range(0, 9) %}
+          <option value="{{ SoB }}">{{ SoB }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Wheezing -->
+      <br><label class="form-label" for="typeNumber">Wheezing:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Wheezing" required="required">
+        <option value="" disabled selected>Wheezing percent</option>
+        {% for W in range(0, 9) %}
+          <option value="{{ W }}">{{ W }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+<!-- Row 10 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Swallowing difficulty -->
+      <br><label class="form-label" for="typeNumber">Swallowing difficulty:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Swallowing difficulty" required="required">
+        <option value="" disabled selected>Swallowing difficulty percent</option>
+        {% for SD in range(0, 9) %}
+          <option value="{{ SD }}">{{ SD }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Clubbing of finger -->
+      <br><label class="form-label" for="typeNumber">Clubbing of finger:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Clubbing of Finger" required="required">
+        <option value="" disabled selected>Clubbing of finger percent</option>
+        {% for CoF in range(0, 9) %}
+          <option value="{{ CoF }}">{{ CoF }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+<!-- Row 11 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Frequent Cold -->
+      <br><label class="form-label" for="typeNumber">Frequent Cold:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Frequent Cold" required="required">
+        <option value="" disabled selected>Frequent Cold percent</option>
+        {% for FC in range(0, 10) %}
+          <option value="{{ FC }}">{{ FC }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Dry Cough -->
+      <br><label class="form-label" for="typeNumber">Dry Cough:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Dry Cough" required="required">
+        <option value="" disabled selected>Dry Cough percent</option>
+        {% for DC in range(0, 8) %}
+          <option value="{{ DC }}">{{ DC }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Row 12 -->
+<div class="row justify-content-around justify-content-evenly">
+  <div class="col-6" style="width: 280px;">
+    <div class="card-body">
+      <!-- Snoring -->
+      <br><label class="form-label" for="typeNumber">Snoring:</label>
+      <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Snoring" required="required">
+        <option value="" disabled selected>Snoring percent</option>
+        {% for Sn in range(0, 8) %}
+          <option value="{{ Sn }}">{{ Sn }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+<div class="col-6" style="width: 280px;">
+  <br><label class="form-label" for="typeNumber">Launch prediction:</label>
+  <button type="submit" class="btn btn-primary btn-block btn-large">Predict Lung cancer</button>
+</div>
+</div>
+
+</form>
+
+<!-- Continue with additional rows and columns for the remaining select fields -->
+
+<!-- Continue with additional rows and columns for the remaining select fields -->
+
+<!-- Continue with additional rows and columns for the remaining select fields -->
+
+<!-- Continue with additional rows and columns for the remaining select fields -->
+
+
+
+
+
+
+  
+     <!-- Action is where the data is sent. In our case, predict page.
+     If action is omitted, it assumed to be the current page
+        
+    	<select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Age" required="required">
+            <option value="" disabled selected>Select an Age</option>
+            {% for age in range(14, 74) %}
+              <option value="{{ age }}">{{ age }}</option>
+            {% endfor %}
+          </select>
+
+        <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Gender" required="required" onchange="updateHiddenInput(this.value)">
+            <option value="" disabled selected>Select a Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+          
+          <input type="hidden" name="Gender" id="genderValue" value="">
+          
+          <br>
+
+
+        <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Air Pollution" required="required">
+            <option value="" disabled selected>Air Pollution percent</option>
+            {% for AP in range(0, 9) %}
+              <option value="{{ AP }}">{{ AP }}</option>
+            {% endfor %}
+          </select><br>
+
+        <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Alcohol use" required="required">
+            <option value="" disabled selected>Alcohol use percent</option>
+            {% for AU in range(0, 9) %}
+              <option value="{{ AU }}">{{ AU }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Dust Allergy" required="required">
+            <option value="" disabled selected>Dust Allergy percent</option>
+            {% for DA in range(0, 9) %}
+              <option value="{{ DA }}">{{ DA }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="OccuPational Hazards" required="required">
+            <option value="" disabled selected>OccuPational Hazards percent</option>
+            {% for OH in range(0, 9) %}
+              <option value="{{ OH }}">{{ OH }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Genetic Risk" required="required">
+            <option value="" disabled selected>Genetic Risk percent</option>
+            {% for GR in range(0, 9) %}
+              <option value="{{ GR }}">{{ GR }}</option>
+            {% endfor %}
+          </select><br>
+
+        <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="chronic Lung Disease" required="required">
+            <option value="" disabled selected>chronic Lung Disease percent</option>
+            {% for LD in range(0, 9) %}
+              <option value="{{ LD }}">{{ LD }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Balanced Diet" required="required">
+            <option value="" disabled selected>Balanced Diet percent</option>
+            {% for BD in range(0, 9) %}
+              <option value="{{ BD }}">{{ BD }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Obesity" required="required">
+            <option value="" disabled selected>Obesity percent</option>
+            {% for O in range(0, 9) %}
+              <option value="{{ O }}">{{ O }}</option>
+            {% endfor %}
+          </select><br>
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Smoking" required="required">
+            <option value="" disabled selected>Smoking percent</option>
+            {% for S in range(0, 9) %}
+              <option value="{{ S }}">{{ S }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Passive smoker" required="required">
+            <option value="" disabled selected>Passive smoker percent</option>
+            {% for PS in range(0, 9) %}
+              <option value="{{ PS }}">{{ PS }}</option>
+            {% endfor %}
+          </select><br>
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Chest Pain" required="required">
+            <option value="" disabled selected>Chest Pain percent</option>
+            {% for CP in range(0, 9) %}
+              <option value="{{ CP }}">{{ CP }}</option>
+            {% endfor %}
+          </select><br> 
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Coughing of Blood" required="required">
+            <option value="" disabled selected>Coughing of Blood percent</option>
+            {% for CoB in range(0, 9) %}
+              <option value="{{ CoB }}">{{ CoB }}</option>
+            {% endfor %}
+          </select><br> 
+
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Fatigue" required="required">
+            <option value="" disabled selected>Fatigue percent</option>
+            {% for F in range(0, 9) %}
+              <option value="{{ F }}">{{ F }}</option>
+            {% endfor %}
+          </select><br> 
+        
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Weight Loss" required="required">
+            <option value="" disabled selected>Weight Loss percent</option>
+            {% for WL in range(0, 9) %}
+              <option value="{{ WL }}">{{ WL }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Shortness of Breath" required="required">
+            <option value="" disabled selected>Shortness of Breath percent</option>
+            {% for SoB in range(0, 9) %}
+              <option value="{{ SoB }}">{{ SoB }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="wheezing" required="required">
+            <option value="" disabled selected>wheezing percent</option>
+            {% for W in range(0, 9) %}
+              <option value="{{ W }}">{{ W }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="swallowing difficulty" required="required">
+            <option value="" disabled selected>swallowing difficulty percent</option>
+            {% for SD in range(0, 9) %}
+              <option value="{{ SD }}">{{ SD }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="clubbing of finger " required="required">
+            <option value="" disabled selected>clubbing of finger percent</option>
+            {% for CoF in range(0, 9) %}
+              <option value="{{ CoF }}">{{ CoF }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Frequent Cold" required="required">
+            <option value="" disabled selected>Frequent Cold percent</option>
+            {% for FC in range(0, 10) %}
+              <option value="{{ FC }}">{{ FC }}</option>
+            {% endfor %}
+          </select><br> 
+          
+          <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Dry Cough" required="required">
+            <option value="" disabled selected>Dry Cogh percent</option>
+            {% for DC in range(0, 8) %}
+              <option value="{{ DC }}">{{ DC }}</option>
+            {% endfor %}
+          </select><br> 
+
+        <select class="form-select form-select-lg color3" aria-label=".form-select-lg example" name="Snoring" required="required">
+            <option value="" disabled selected>Snoring percent</option>
+            {% for Sn in range(0, 8) %}
+              <option value="{{ Sn }}">{{ Sn }}</option>
+            {% endfor %}
+          </select><br>   
+ -->
+          
+       
+
+
+   <br>
+   <br>
+   <h4 align="center" style="color:Violet;"> {{ prediction_text }} </h4>
+
+ </div>
+
+
+</body>
+{% endblock %}
+
+
+
