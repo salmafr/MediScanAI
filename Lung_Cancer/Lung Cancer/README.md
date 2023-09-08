@@ -1,4 +1,4 @@
-# Flask Web App Tutorial
+# Lung Cancer Detection
 
 ## Setup & Installation
 
